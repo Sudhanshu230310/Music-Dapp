@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import {
-  Users,
   ChevronUp,
   ChevronDown,
   Music2,
@@ -15,68 +14,49 @@ import { YouTubePlayer } from "../components/VideoPlayer";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-// ------------------------------------------------------
-
 export default function Dashboard() {
   const { data: session } = useSession();
 
   const [queue, setQueue] = useState<any[]>([]);
-  const [currentSong, setCurrentSong] = useState<any | null>();
-
+  const [currentSong, setCurrentSong] = useState<any | null>(null);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ------------------------------------------------------
-
-  async function setStream() {
+  // -------- Fetch Queue --------
+  const refreshStream = async () => {
     const res = await axios.get("/api/streams/my");
     const sorted = [...res.data.streams].sort((a, b) => b.upvotes - a.upvotes);
     setQueue(sorted);
-    if(sorted.length>0){
-        console.log(sorted[0]);
-        setCurrentSong(sorted[0]);
-    }
-    else{
-        setCurrentSong(null);
-    }
-  }
+  };
 
-  async function refreshStream() {
-    const res = await axios.get("/api/streams/my");
-    const sorted = [...res.data.streams].sort((a, b) => b.upvotes - a.upvotes);
-    setQueue(sorted);
-  }
-
+  // -------- Derive Current Song --------
   useEffect(() => {
-    setStream();
+    if (queue.length > 0) setCurrentSong(queue[0]);
+    else setCurrentSong(null);
+  }, [queue]);
+
+  // -------- Initial Load + Poll --------
+  useEffect(() => {
+    refreshStream();
     const id = setInterval(refreshStream, 10000);
     return () => clearInterval(id);
   }, []);
 
-  // ------------------------------------------------------
-
+  // -------- Play Next --------
   const playNextSong = async () => {
     if (!currentSong) return;
-
-    await axios.post("/api/streams/deletestream", {
-      id: currentSong.id,
-    });
-
-    setStream();
-
+    await axios.post("/api/streams/deletestream", { id: currentSong.id });
+    await refreshStream();
   };
 
-  // ------------------------------------------------------
-
+  // -------- Voting --------
   const handleVote = async (id: string, delta: number) => {
     if (delta === 1) await axios.post("/api/streams/upvote", { streamID: id });
-    if (delta === -1)
-      await axios.post("/api/streams/downvote", { streamID: id });
+    if (delta === -1) await axios.post("/api/streams/downvote", { streamID: id });
     refreshStream();
   };
 
-  // ------------------------------------------------------
-
+  // -------- YouTube ID --------
   const extractVideoId = (url: string) => {
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]{11}).*/;
@@ -84,8 +64,7 @@ export default function Dashboard() {
     return match ? match[2] : null;
   };
 
-  // ------------------------------------------------------
-
+  // -------- Submit --------
   const handleSubmit = async () => {
     const videoId = extractVideoId(url);
     if (!videoId || !session) return;
@@ -95,7 +74,6 @@ export default function Dashboard() {
       createrId: session.user?.id,
       url,
     });
-
     setUrl("");
     setLoading(false);
     refreshStream();
@@ -103,10 +81,8 @@ export default function Dashboard() {
 
   const previewId = extractVideoId(url);
 
-  // ------------------------------------------------------
-
   return (
-    <main className="relative h-full bg-background overflow-hidden">
+    <main className="h-full bg-background overflow-hidden">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-6">
         {/* NOW PLAYING */}
         <div className="lg:col-span-8 space-y-6">
@@ -118,7 +94,7 @@ export default function Dashboard() {
           {currentSong ? (
             <YouTubePlayer
               videoId={currentSong.extractedId}
-              onEnded={() => playNextSong()}
+              onEnded={playNextSong}
             />
           ) : (
             <div className="aspect-video border rounded-xl flex items-center justify-center">
