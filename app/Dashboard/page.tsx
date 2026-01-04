@@ -13,6 +13,7 @@ import { Badge, Button, Input } from "../components/Button";
 import { YouTubePlayer } from "../components/VideoPlayer";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import {WalletDisconnectButton,WalletMultiButton} from '@solana/wallet-adapter-react-ui';
 
 export default function Dashboard() {
   const { data: session } = useSession();
@@ -128,7 +129,7 @@ export default function Dashboard() {
 
         {/* QUEUE */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between mb-8 items-center">
             <h2 className="flex items-center gap-2">
               <Music2 className="h-5 w-5" /> Up Next
             </h2>

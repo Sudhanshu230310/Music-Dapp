@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
-import { Provider } from "./provider";
+import { ConProvider, Provider } from "./provider";
 import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
@@ -26,15 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Provider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Navbar/>
-          {children}
-        </body>
-      </html>
-    </Provider>
+    <ConProvider>
+      <Provider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <Navbar/>
+            {children}
+          </body>
+        </html>
+      </Provider>
+    </ConProvider>
   );
 }
