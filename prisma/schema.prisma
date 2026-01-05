@@ -21,6 +21,7 @@ model User{
   provider    Provider
   streams     Stream[]
   upvotes     Upvote[]
+  room        Room[]
 }
 
 model Stream{
@@ -29,13 +30,17 @@ model Stream{
   active          Boolean @default(true)
   upvote          Upvote[]
   userID          String
+  roomId          String
   url             String
   extractedId     String
   title           String  @default("")
   smallImg        String  @default("")
   bigImage        String  @default("")
-  user            User @relation(fields: [userID],references: [id],onDelete: Cascade)
+  user            User @relation(fields: [userID], references: [id], onDelete: Cascade)
+  room            Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
 }
+
 
 model Upvote{
   id          String @id @default(uuid())
@@ -44,6 +49,16 @@ model Upvote{
   user        User @relation(fields: [userID],references: [id])
   stream      Stream @relation(fields: [streamId],references: [id],onDelete: Cascade)
   @@unique([userID,streamId])
+}
+
+model Room {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  isActive    Boolean  @default(true)
+  userID      String
+  user        User     @relation(fields: [userID], references: [id], onDelete: Cascade)
+  streams     Stream[]
+  createdAt   DateTime @default(now())
 }
 
 enum StreamType{

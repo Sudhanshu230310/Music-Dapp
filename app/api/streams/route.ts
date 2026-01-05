@@ -7,10 +7,11 @@ var yt_regex = /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:m\.)?(?:youtu(?:be)?\.com\/(?
 const CreatStreamSchema = z.object({
   createrId: z.string(),
   url: z.string(),
+  roomID:z.string(),
 });
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json(); // ✅ read once
+    const body = await req.json();
     console.log("hello", body);
 
     const data = CreatStreamSchema.parse(body);
@@ -19,11 +20,11 @@ export async function POST(req: NextRequest) {
     if (!isYt) {
       return NextResponse.json(
         { message: "Wrong url format" },
-        { status: 400 } // ✅ 400, not 411
+        { status: 400 } 
       );
     }
 
-    const extractedId = isYt[1]; // ✅ safer extraction
+    const extractedId = isYt[1]; 
 
     const res = await youtubesearchapi.GetVideoDetails(extractedId);
 
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
     await client.stream.create({
       data: {
         userID: data.createrId,
+        roomId: data.roomID,
         url: data.url,
         extractedId,
         type: "YouTube",

@@ -53,7 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Stream: 'Stream',
-  Upvote: 'Upvote'
+  Upvote: 'Upvote',
+  Room: 'Room'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -87,11 +88,13 @@ export const StreamScalarFieldEnum = {
   type: 'type',
   active: 'active',
   userID: 'userID',
+  roomId: 'roomId',
   url: 'url',
   extractedId: 'extractedId',
   title: 'title',
   smallImg: 'smallImg',
-  bigImage: 'bigImage'
+  bigImage: 'bigImage',
+  createdAt: 'createdAt'
 } as const
 
 export type StreamScalarFieldEnum = (typeof StreamScalarFieldEnum)[keyof typeof StreamScalarFieldEnum]
@@ -104,6 +107,17 @@ export const UpvoteScalarFieldEnum = {
 } as const
 
 export type UpvoteScalarFieldEnum = (typeof UpvoteScalarFieldEnum)[keyof typeof UpvoteScalarFieldEnum]
+
+
+export const RoomScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  isActive: 'isActive',
+  userID: 'userID',
+  createdAt: 'createdAt'
+} as const
+
+export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
 
 
 export const SortOrder = {

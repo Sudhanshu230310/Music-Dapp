@@ -176,6 +176,7 @@ export type UserWhereInput = {
   provider?: Prisma.EnumProviderFilter<"User"> | $Enums.Provider
   streams?: Prisma.StreamListRelationFilter
   upvotes?: Prisma.UpvoteListRelationFilter
+  room?: Prisma.RoomListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -185,6 +186,7 @@ export type UserOrderByWithRelationInput = {
   provider?: Prisma.SortOrder
   streams?: Prisma.StreamOrderByRelationAggregateInput
   upvotes?: Prisma.UpvoteOrderByRelationAggregateInput
+  room?: Prisma.RoomOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -197,6 +199,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   provider?: Prisma.EnumProviderFilter<"User"> | $Enums.Provider
   streams?: Prisma.StreamListRelationFilter
   upvotes?: Prisma.UpvoteListRelationFilter
+  room?: Prisma.RoomListRelationFilter
 }, "id" | "email" | "password">
 
 export type UserOrderByWithAggregationInput = {
@@ -226,6 +229,7 @@ export type UserCreateInput = {
   provider: $Enums.Provider
   streams?: Prisma.StreamCreateNestedManyWithoutUserInput
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
+  room?: Prisma.RoomCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -235,6 +239,7 @@ export type UserUncheckedCreateInput = {
   provider: $Enums.Provider
   streams?: Prisma.StreamUncheckedCreateNestedManyWithoutUserInput
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
+  room?: Prisma.RoomUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -244,6 +249,7 @@ export type UserUpdateInput = {
   provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
   streams?: Prisma.StreamUpdateManyWithoutUserNestedInput
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
+  room?: Prisma.RoomUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -253,6 +259,7 @@ export type UserUncheckedUpdateInput = {
   provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
   streams?: Prisma.StreamUncheckedUpdateManyWithoutUserNestedInput
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
+  room?: Prisma.RoomUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -338,12 +345,27 @@ export type UserUpdateOneRequiredWithoutUpvotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpvotesInput, Prisma.UserUpdateWithoutUpvotesInput>, Prisma.UserUncheckedUpdateWithoutUpvotesInput>
 }
 
+export type UserCreateNestedOneWithoutRoomInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoomInput, Prisma.UserUncheckedCreateWithoutRoomInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoomInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRoomNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoomInput, Prisma.UserUncheckedCreateWithoutRoomInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoomInput
+  upsert?: Prisma.UserUpsertWithoutRoomInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRoomInput, Prisma.UserUpdateWithoutRoomInput>, Prisma.UserUncheckedUpdateWithoutRoomInput>
+}
+
 export type UserCreateWithoutStreamsInput = {
   id?: string
   email: string
   password: string
   provider: $Enums.Provider
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
+  room?: Prisma.RoomCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStreamsInput = {
@@ -352,6 +374,7 @@ export type UserUncheckedCreateWithoutStreamsInput = {
   password: string
   provider: $Enums.Provider
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
+  room?: Prisma.RoomUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStreamsInput = {
@@ -376,6 +399,7 @@ export type UserUpdateWithoutStreamsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
+  room?: Prisma.RoomUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStreamsInput = {
@@ -384,6 +408,7 @@ export type UserUncheckedUpdateWithoutStreamsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
+  room?: Prisma.RoomUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUpvotesInput = {
@@ -392,6 +417,7 @@ export type UserCreateWithoutUpvotesInput = {
   password: string
   provider: $Enums.Provider
   streams?: Prisma.StreamCreateNestedManyWithoutUserInput
+  room?: Prisma.RoomCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUpvotesInput = {
@@ -400,6 +426,7 @@ export type UserUncheckedCreateWithoutUpvotesInput = {
   password: string
   provider: $Enums.Provider
   streams?: Prisma.StreamUncheckedCreateNestedManyWithoutUserInput
+  room?: Prisma.RoomUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUpvotesInput = {
@@ -424,6 +451,7 @@ export type UserUpdateWithoutUpvotesInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
   streams?: Prisma.StreamUpdateManyWithoutUserNestedInput
+  room?: Prisma.RoomUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUpvotesInput = {
@@ -432,6 +460,59 @@ export type UserUncheckedUpdateWithoutUpvotesInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
   streams?: Prisma.StreamUncheckedUpdateManyWithoutUserNestedInput
+  room?: Prisma.RoomUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRoomInput = {
+  id?: string
+  email: string
+  password: string
+  provider: $Enums.Provider
+  streams?: Prisma.StreamCreateNestedManyWithoutUserInput
+  upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRoomInput = {
+  id?: string
+  email: string
+  password: string
+  provider: $Enums.Provider
+  streams?: Prisma.StreamUncheckedCreateNestedManyWithoutUserInput
+  upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRoomInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRoomInput, Prisma.UserUncheckedCreateWithoutRoomInput>
+}
+
+export type UserUpsertWithoutRoomInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRoomInput, Prisma.UserUncheckedUpdateWithoutRoomInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRoomInput, Prisma.UserUncheckedCreateWithoutRoomInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRoomInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRoomInput, Prisma.UserUncheckedUpdateWithoutRoomInput>
+}
+
+export type UserUpdateWithoutRoomInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
+  streams?: Prisma.StreamUpdateManyWithoutUserNestedInput
+  upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRoomInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumProviderFieldUpdateOperationsInput | $Enums.Provider
+  streams?: Prisma.StreamUncheckedUpdateManyWithoutUserNestedInput
+  upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -442,11 +523,13 @@ export type UserUncheckedUpdateWithoutUpvotesInput = {
 export type UserCountOutputType = {
   streams: number
   upvotes: number
+  room: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   streams?: boolean | UserCountOutputTypeCountStreamsArgs
   upvotes?: boolean | UserCountOutputTypeCountUpvotesArgs
+  room?: boolean | UserCountOutputTypeCountRoomArgs
 }
 
 /**
@@ -473,6 +556,13 @@ export type UserCountOutputTypeCountUpvotesArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.UpvoteWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRoomArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RoomWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -481,6 +571,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   provider?: boolean
   streams?: boolean | Prisma.User$streamsArgs<ExtArgs>
   upvotes?: boolean | Prisma.User$upvotesArgs<ExtArgs>
+  room?: boolean | Prisma.User$roomArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -509,6 +600,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   streams?: boolean | Prisma.User$streamsArgs<ExtArgs>
   upvotes?: boolean | Prisma.User$upvotesArgs<ExtArgs>
+  room?: boolean | Prisma.User$roomArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -519,6 +611,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     streams: Prisma.$StreamPayload<ExtArgs>[]
     upvotes: Prisma.$UpvotePayload<ExtArgs>[]
+    room: Prisma.$RoomPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -921,6 +1014,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   streams<T extends Prisma.User$streamsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$streamsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StreamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   upvotes<T extends Prisma.User$upvotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$upvotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UpvotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  room<T extends Prisma.User$roomArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$roomArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1387,6 +1481,30 @@ export type User$upvotesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.UpvoteScalarFieldEnum | Prisma.UpvoteScalarFieldEnum[]
+}
+
+/**
+ * User.room
+ */
+export type User$roomArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Room
+   */
+  select?: Prisma.RoomSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Room
+   */
+  omit?: Prisma.RoomOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RoomInclude<ExtArgs> | null
+  where?: Prisma.RoomWhereInput
+  orderBy?: Prisma.RoomOrderByWithRelationInput | Prisma.RoomOrderByWithRelationInput[]
+  cursor?: Prisma.RoomWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RoomScalarFieldEnum | Prisma.RoomScalarFieldEnum[]
 }
 
 /**

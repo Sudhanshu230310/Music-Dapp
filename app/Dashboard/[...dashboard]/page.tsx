@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import {
   ChevronUp,
@@ -9,19 +8,29 @@ import {
   Plus,
   Loader2,
 } from "lucide-react";
-import { Badge, Button, Input } from "../components/Button";
-import { YouTubePlayer } from "../components/VideoPlayer";
+import { Badge, Button, Input } from "../../components/Button";
+import { YouTubePlayer } from "../../components/VideoPlayer";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import {WalletDisconnectButton,WalletMultiButton} from '@solana/wallet-adapter-react-ui';
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
+import { useRoom } from "@/app/Context/useRoom";
 
 export default function Dashboard() {
   const { data: session } = useSession();
-
+  const { publicKey, sendTransaction } = useWallet();
+  const { connection } = useConnection();
   const [queue, setQueue] = useState<any[]>([]);
   const [currentSong, setCurrentSong] = useState<any | null>(null);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const lamports = 1;
+  const ctx=useRoom();
 
   // -------- Fetch Queue --------
   const refreshStream = async () => {
@@ -52,9 +61,44 @@ export default function Dashboard() {
 
   // -------- Voting --------
   const handleVote = async (id: string, delta: number) => {
-    if (delta === 1) await axios.post("/api/streams/upvote", { streamID: id });
-    if (delta === -1) await axios.post("/api/streams/downvote", { streamID: id });
-    refreshStream();
+    if (!publicKey) {
+      alert("connect the wallet");
+      return;
+    } else {
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(
+            "ALGFDww3N2gbjenPgTMUyivKG7UKLk8CVJf62fS6h6ze"
+          ),
+          lamports,
+        })
+      );
+      const {
+        context: { slot: minContextSlot },
+        value: { blockhash, lastValidBlockHeight },
+      } = await connection.getLatestBlockhashAndContext();
+
+      const signature = await sendTransaction(transaction, connection, {
+        minContextSlot,
+      });
+      const res = await connection.confirmTransaction({
+        blockhash,
+        lastValidBlockHeight,
+        signature,
+      });
+
+      if(res.value.err==null){
+        if (delta === 1)
+          await axios.post("/api/streams/upvote", { streamID: id });
+        if (delta === -1)
+          await axios.post("/api/streams/downvote", { streamID: id });
+        refreshStream();
+      }
+      else{
+        alert("Somthing wents wrong");
+      }
+    }
   };
 
   // -------- YouTube ID --------
@@ -69,10 +113,11 @@ export default function Dashboard() {
   const handleSubmit = async () => {
     const videoId = extractVideoId(url);
     if (!videoId || !session) return;
-
+    if(ctx.roomID=="") return;
     setLoading(true);
     await axios.post("/api/streams", {
       createrId: session.user?.id,
+      roomID:ctx.roomID,
       url,
     });
     setUrl("");

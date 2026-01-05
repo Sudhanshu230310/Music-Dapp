@@ -32,3 +32,8 @@ export type Stream = Prisma.StreamModel
  * 
  */
 export type Upvote = Prisma.UpvoteModel
+/**
+ * Model Room
+ * 
+ */
+export type Room = Prisma.RoomModel

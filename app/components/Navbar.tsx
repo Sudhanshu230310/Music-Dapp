@@ -6,10 +6,9 @@ import { useEffect } from "react";
 export default function Navbar() {
   const islogin = useSession();
   const router = useRouter();
-  console.log(islogin);
   useEffect(() => {
     if (islogin.status == "authenticated") {
-      router.push("Dashboard");
+      router.push("Room");
     } else {
       router.push("/");
     }

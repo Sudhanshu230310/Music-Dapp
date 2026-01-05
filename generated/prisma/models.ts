@@ -11,4 +11,5 @@
 export type * from './models/User'
 export type * from './models/Stream'
 export type * from './models/Upvote'
+export type * from './models/Room'
 export type * from './commonInputTypes'
