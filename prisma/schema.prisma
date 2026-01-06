@@ -14,15 +14,17 @@ datasource db {
 }
 
 
-model User{
-  id          String @id @default(uuid())
-  email       String @unique
-  password    String @unique()
-  provider    Provider
-  streams     Stream[]
-  upvotes     Upvote[]
-  room        Room[]
+model User {
+  id        String @id @default(uuid())
+  email     String @unique
+  password  String 
+  provider  Provider
+  streams   Stream[]
+  upvotes   Upvote[]
+  room      Room[]
+  joins     Join[]     
 }
+
 
 model Stream{
   id              String @id @default(uuid())
@@ -52,14 +54,27 @@ model Upvote{
 }
 
 model Room {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  isActive    Boolean  @default(true)
-  userID      String
-  user        User     @relation(fields: [userID], references: [id], onDelete: Cascade)
-  streams     Stream[]
-  createdAt   DateTime @default(now())
+  id        String @id @default(uuid())
+  name      String @unique
+  isActive  Boolean @default(true)
+  userID    String
+  user      User     @relation(fields: [userID], references: [id], onDelete: Cascade)
+  streams   Stream[]
+  joins     Join[]   
+  createdAt DateTime @default(now())
 }
+
+
+model Join {
+  id        String   @id @default(uuid())
+  userId    String
+  roomId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room      Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime @default(now())
+  @@unique([userId, roomId]) 
+}
+
 
 enum StreamType{
   Spotify

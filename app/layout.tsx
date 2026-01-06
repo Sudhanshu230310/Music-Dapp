@@ -4,6 +4,7 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ConProvider, Provider } from "./provider";
 import Navbar from "./components/Navbar";
+import { RoomProvider } from "./Context/useRoom";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,17 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ConProvider>
-      <Provider>
-        <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <Navbar/>
-            {children}
-          </body>
-        </html>
-      </Provider>
-    </ConProvider>
+    <RoomProvider>
+      <ConProvider>
+        <Provider>
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              <Navbar/>
+              {children}
+            </body>
+          </html>
+        </Provider>
+      </ConProvider>
+    </RoomProvider>
   );
 }

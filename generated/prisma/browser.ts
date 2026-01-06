@@ -37,3 +37,8 @@ export type Upvote = Prisma.UpvoteModel
  * 
  */
 export type Room = Prisma.RoomModel
+/**
+ * Model Join
+ * 
+ */
+export type Join = Prisma.JoinModel

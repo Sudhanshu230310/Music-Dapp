@@ -387,7 +387,8 @@ export const ModelName = {
   User: 'User',
   Stream: 'Stream',
   Upvote: 'Upvote',
-  Room: 'Room'
+  Room: 'Room',
+  Join: 'Join'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "stream" | "upvote" | "room"
+    modelProps: "user" | "stream" | "upvote" | "room" | "join"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +704,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Join: {
+      payload: Prisma.$JoinPayload<ExtArgs>
+      fields: Prisma.JoinFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.JoinFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.JoinFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>
+        }
+        findFirst: {
+          args: Prisma.JoinFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.JoinFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>
+        }
+        findMany: {
+          args: Prisma.JoinFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>[]
+        }
+        create: {
+          args: Prisma.JoinCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>
+        }
+        createMany: {
+          args: Prisma.JoinCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.JoinCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>[]
+        }
+        delete: {
+          args: Prisma.JoinDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>
+        }
+        update: {
+          args: Prisma.JoinUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>
+        }
+        deleteMany: {
+          args: Prisma.JoinDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.JoinUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.JoinUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>[]
+        }
+        upsert: {
+          args: Prisma.JoinUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JoinPayload>
+        }
+        aggregate: {
+          args: Prisma.JoinAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateJoin>
+        }
+        groupBy: {
+          args: Prisma.JoinGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JoinGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.JoinCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JoinCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -787,6 +862,16 @@ export const RoomScalarFieldEnum = {
 } as const
 
 export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
+
+
+export const JoinScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roomId: 'roomId',
+  joinedAt: 'joinedAt'
+} as const
+
+export type JoinScalarFieldEnum = (typeof JoinScalarFieldEnum)[keyof typeof JoinScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -986,6 +1071,7 @@ export type GlobalOmitConfig = {
   stream?: Prisma.StreamOmit
   upvote?: Prisma.UpvoteOmit
   room?: Prisma.RoomOmit
+  join?: Prisma.JoinOmit
 }
 
 /* Types for Logging */

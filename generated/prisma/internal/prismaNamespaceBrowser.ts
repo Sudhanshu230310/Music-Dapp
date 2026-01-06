@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   Stream: 'Stream',
   Upvote: 'Upvote',
-  Room: 'Room'
+  Room: 'Room',
+  Join: 'Join'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -118,6 +119,16 @@ export const RoomScalarFieldEnum = {
 } as const
 
 export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
+
+
+export const JoinScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roomId: 'roomId',
+  joinedAt: 'joinedAt'
+} as const
+
+export type JoinScalarFieldEnum = (typeof JoinScalarFieldEnum)[keyof typeof JoinScalarFieldEnum]
 
 
 export const SortOrder = {

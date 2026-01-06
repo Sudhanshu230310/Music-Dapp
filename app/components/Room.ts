@@ -6,11 +6,19 @@ export async function createRoomAPI(roomName: string, userId: string) {
     roomName,
     id: userId,
   });
-  console.log(res.data);
-  return res.data;
+  return res;
 }
 
 export async function getRooms(){
     const res=await axios.get("/api/rooms/getrooms");
     return res.data.rooms
 }
+
+export async function joinRoom(roomID:string){
+    const res=await axios.post("/api/rooms/joinroom",{
+        roomId:roomID
+    })
+    console.log(res.data);
+    return res;
+}
+

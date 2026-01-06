@@ -20,29 +20,40 @@ import {
   Transaction,
 } from "@solana/web3.js";
 import { useRoom } from "@/app/Context/useRoom";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const { data: session } = useSession();
   const { publicKey, sendTransaction } = useWallet();
   const { connection } = useConnection();
   const [queue, setQueue] = useState<any[]>([]);
-  const [currentSong, setCurrentSong] = useState<any | null>(null);
+  // const [currentSong, setCurrentSong] = useState<any | null>(null);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const lamports = 1;
-  const ctx=useRoom();
+  const ctx = useRoom();
+  const router = useRouter();
 
   // -------- Fetch Queue --------
   const refreshStream = async () => {
-    const res = await axios.get("/api/streams/my");
-    const sorted = [...res.data.streams].sort((a, b) => b.upvotes - a.upvotes);
+    if (!ctx?.roomID) return;
+
+    const res = await axios.get("/api/streams/my", {
+      params: {
+        roomId: ctx.roomID,
+      },
+    });
+
+    const sorted = res.data.streams.sort((a:any, b:any) => b.votes - a.votes);
     setQueue(sorted);
+    if(queue)
+    ctx.currentSong(queue[0]);
   };
 
   // -------- Derive Current Song --------
   useEffect(() => {
-    if (queue.length > 0) setCurrentSong(queue[0]);
-    else setCurrentSong(null);
+    if (queue.length > 0) ctx.setCurrentSong(queue[0]);
+    else ctx.setCurrentSong(null);
   }, [queue]);
 
   // -------- Initial Load + Poll --------
@@ -54,8 +65,8 @@ export default function Dashboard() {
 
   // -------- Play Next --------
   const playNextSong = async () => {
-    if (!currentSong) return;
-    await axios.post("/api/streams/deletestream", { id: currentSong.id });
+    if (!ctx.currentSong) return;
+    await axios.post("/api/streams/deletestream", { id: ctx.currentSong.id });
     await refreshStream();
   };
 
@@ -88,14 +99,13 @@ export default function Dashboard() {
         signature,
       });
 
-      if(res.value.err==null){
+      if (res.value.err == null) {
         if (delta === 1)
           await axios.post("/api/streams/upvote", { streamID: id });
         if (delta === -1)
           await axios.post("/api/streams/downvote", { streamID: id });
         refreshStream();
-      }
-      else{
+      } else {
         alert("Somthing wents wrong");
       }
     }
@@ -113,11 +123,11 @@ export default function Dashboard() {
   const handleSubmit = async () => {
     const videoId = extractVideoId(url);
     if (!videoId || !session) return;
-    if(ctx.roomID=="") return;
+    if (ctx?.roomID == "") return;
     setLoading(true);
     await axios.post("/api/streams", {
       createrId: session.user?.id,
-      roomID:ctx.roomID,
+      roomID: ctx.roomID,
       url,
     });
     setUrl("");
@@ -126,7 +136,7 @@ export default function Dashboard() {
   };
 
   const previewId = extractVideoId(url);
-
+  console.log(ctx?.roomID);
   return (
     <main className="h-full bg-background overflow-hidden">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-6">
@@ -134,12 +144,12 @@ export default function Dashboard() {
         <div className="lg:col-span-8 space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Now Playing</h2>
-            {currentSong && <Badge>{currentSong.title}</Badge>}
+            {ctx.currentSong && <Badge>{ctx.currentSong.title}</Badge>}
           </div>
 
-          {currentSong ? (
+          {ctx.currentSong ? (
             <YouTubePlayer
-              videoId={currentSong.extractedId}
+              videoId={ctx.currentSong.extractedId}
               onEnded={playNextSong}
             />
           ) : (
@@ -155,7 +165,7 @@ export default function Dashboard() {
               <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" />
               <Input
                 value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e:any) => setUrl(e.target.value)}
                 placeholder="Paste YouTube link"
                 className="pl-10"
               />
@@ -173,7 +183,11 @@ export default function Dashboard() {
         </div>
 
         {/* QUEUE */}
+
         <div className="lg:col-span-4 space-y-4">
+          <div onClick={() => router.push("/Room")} className="cursor-pointer">
+            Leave Room
+          </div>
           <div className="flex justify-between mb-8 items-center">
             <h2 className="flex items-center gap-2">
               <Music2 className="h-5 w-5" /> Up Next
@@ -191,7 +205,7 @@ export default function Dashboard() {
                   <Button size="icon" onClick={() => handleVote(song.id, 1)}>
                     <ChevronUp />
                   </Button>
-                  <span>{song.upvotes}</span>
+                  <span>{song.votes}</span>
                   <Button size="icon" onClick={() => handleVote(song.id, -1)}>
                     <ChevronDown />
                   </Button>
